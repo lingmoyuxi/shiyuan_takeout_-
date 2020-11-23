@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shiyuan.mapper.MealMapper">
+  <resultMap id="BaseResultMap" type="com.shiyuan.model.Meal">
+    <id column="meal_id" jdbcType="BIGINT" property="mealId" />
+    <result column="store_id" jdbcType="BIGINT" property="storeId" />
+    <result column="meal_name" jdbcType="VARCHAR" property="mealName" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    meal_id, store_id, meal_name
+  </sql>
+  <select id="selectByExample" parameterType="com.shiyuan.model.MealExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from meal
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from meal
+    where meal_id = #{mealId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from meal
+    where meal_id = #{mealId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.shiyuan.model.MealExample">
+    delete from meal
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.shiyuan.model.Meal">
+    insert into meal (meal_id, store_id, meal_name
+      )
+    values (#{mealId,jdbcType=BIGINT}, #{storeId,jdbcType=BIGINT}, #{mealName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.shiyuan.model.Meal">
+    insert into meal
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mealId != null">
+        meal_id,
+      </if>
+      <if test="storeId != null">
+        store_id,
+      </if>
+      <if test="mealName != null">
+        meal_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mealId != null">
+        #{mealId,jdbcType=BIGINT},
+      </if>
+      <if test="storeId != null">
+        #{storeId,jdbcType=BIGINT},
+      </if>
+      <if test="mealName != null">
+        #{mealName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.shiyuan.model.MealExample" resultType="java.lang.Long">
+    select count(*) from meal
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update meal
+    <set>
+      <if test="record.mealId != null">
+        meal_id = #{record.mealId,jdbcType=BIGINT},
+      </if>
+      <if test="record.storeId != null">
+        store_id = #{record.storeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.mealName != null">
+        meal_name = #{record.mealName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update meal
+    set meal_id = #{record.mealId,jdbcType=BIGINT},
+      store_id = #{record.storeId,jdbcType=BIGINT},
+      meal_name = #{record.mealName,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shiyuan.model.Meal">
+    update meal
+    <set>
+      <if test="storeId != null">
+        store_id = #{storeId,jdbcType=BIGINT},
+      </if>
+      <if test="mealName != null">
+        meal_name = #{mealName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where meal_id = #{mealId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.shiyuan.model.Meal">
+    update meal
+    set store_id = #{storeId,jdbcType=BIGINT},
+      meal_name = #{mealName,jdbcType=VARCHAR}
+    where meal_id = #{mealId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<form style="text-align: center; background-color: antiquewhite;" action="/泠音音乐/uploadmusic" method="post" enctype="multipart/form-data">
+			<table style="margin: 0 auto;">
+				<!-- int regionid,String musicname, String musicsinger,int albumid,int labelid -->
+				<tr>
+					<td align="right">歌曲名称</td>
+					<td><input type="text" name="musicname" /></td>
+				</tr>
+				<tr>
+					<td align="right">歌手</td>
+					<td><input type="text" name="musicsinger" /></td>
+				</tr>
+				<tr>
+					<td align="right">地区id</td>
+					<td><input type="number" name="regionid" /></td>
+				</tr>
+				<tr>
+					<td align="right">专辑id</td>
+					<td><input type="number" name="albumid" /></td>
+				</tr>
+				<tr>
+					<td align="right">标签id</td>
+					<td><input type="number" name="labelid" /></td>
+				</tr>
+				<tr>
+					<td align="right">文件最大100m</td>
+					<td><input type="file" name="ulm" /></td>
+				</tr>
+			</table>
+			<input value="上传" type="submit">
+		</form>
+		<form style="text-align: center;background-color: aqua;" action="/泠音音乐/addregion" method="get" enctype="application/x-www-form-urlencoded">
+			<table style="margin: 0 auto;">
+				<tr>
+					<td align="right">语种id</td>
+					<td><input type="number" name="regionId" /></td>
+				</tr>
+				<tr>
+					<td align="right">语种名称</td>
+					<td><input type="text" name="regionName" /></td>
+				</tr>
+			</table>
+			<input value="添加语种" type="submit">
+		</form>
+		<form style="text-align: center; background-color: beige;" action="/泠音音乐/addlabel" method="get" enctype="application/x-www-form-urlencoded">
+			<table style="margin: 0 auto;">
+				<tr>
+					<td align="right">标签id</td>
+					<td><input type="number" name="labelId" /></td>
+				</tr>
+				<tr>
+					<td align="right">标签名称</td>
+					<td><input type="text" name="labelName" /></td>
+				</tr>
+			</table>
+			<input value="添加标签" type="submit">
+		</form>
+		<form style="text-align: center; background-color: burlywood;" action="/泠音音乐/upsonglist" method="post" enctype="multipart/form-data">
+			<table style="margin: 0 auto;">
+				<!-- int regionid,String musicname, String musicsinger,int albumid,int labelid -->
+				<tr>
+					<td align="right">歌单名称</td>
+					<td><input type="text" name="songlistname" /></td>
+				</tr>
+				<tr>
+					<td align="right">文件最大100m</td>
+					<td><input type="file" name="usl" /></td>
+				</tr>
+			</table>
+			<input value="上传歌单" type="submit">
+		</form>
+		<form style="text-align: center; background-color:  coral;" action="/泠音音乐/upalbum" method="post" enctype="multipart/form-data">
+			<table style="margin: 0 auto;">
+				<!-- int regionid,String musicname, String musicsinger,int albumid,int labelid -->
+				<tr>
+					<td align="right">专辑名称</td>
+					<td><input type="text" name="albumname" /></td>
+				</tr>
+				<tr>
+					<td align="right">文件最大100m</td>
+					<td><input type="file" name="ua" /></td>
+				</tr>
+			</table>
+			<input value="上传专辑" type="submit">
+		</form>
+	</body>
+</html>
