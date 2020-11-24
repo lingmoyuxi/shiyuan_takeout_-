@@ -14,6 +14,10 @@ public class JsonUtil {
 		return basic(0, data, null);
 	}
 	
+	public static String basic(String data) {
+		return basic(0, data, null);
+	}
+	
 	/**
 	 * 基本返回Json数据格式(用于错误时)
 	 * @param status 状态码
@@ -34,6 +38,10 @@ public class JsonUtil {
 	public static String basic(int status, Object data, String message) {
 		return "{\"status\":" + status + ",\"message\": \"" + (message==null?"":message) + "\",\"data\":" + (data==null?"\"\"":toJson(data)) + "}";
 	}
+	public static String basic(int status, String data, String message) {
+		return "{\"status\":" + status + ",\"message\": \"" + (message==null?"":message) + "\",\"data\":" + (data==null?"\"\"":data) + "}";
+	}
+	
 	
 	
 	/**
