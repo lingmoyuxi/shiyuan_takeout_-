@@ -17,6 +17,9 @@ public interface FeedbackMapper {
     int insertSelective(Feedback record);
 
     List<Feedback> selectByExample(FeedbackExample example);
+    
+    // 添加根据用户id获取反馈历史记录
+    List<Feedback> selectByuserId(Long userId);
 
     Feedback selectByPrimaryKey(Long feedbackId);
 
