@@ -89,6 +89,19 @@
     from feedback
     where feedback_id = #{feedbackId,jdbcType=BIGINT}
   </select>
+  
+  <!-- 添加根据用户id查询历史记录 -->
+<!--   <sql id="Get_Feedback_List">
+    feedback_id, feedback_type, feedback_content, feedback_date
+  </sql> -->
+  <select id="selectByuserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List" />
+  	from feedback
+  	where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <!-- 添加根据用户id查询历史记录结束 -->
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from feedback
     where feedback_id = #{feedbackId,jdbcType=BIGINT}

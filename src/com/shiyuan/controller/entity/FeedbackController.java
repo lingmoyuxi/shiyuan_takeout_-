@@ -2,6 +2,7 @@ package com.shiyuan.controller.entity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,12 @@ public class FeedbackController {
 	FeedbackMapper feedbackMapper;
 	FeedbackExample feedbackExample = new FeedbackExample();
 	
+	/** -用户提交反馈-
+	 *  服务器收到用户反馈生成的随机反馈id
+	 *  用户id
+	 *  用户反馈类型
+	 *  用户反馈内容
+	 *  反馈提交生成的时间**/
 	@ResponseBody
 	@RequestMapping("fbSubmit")
 	public String fbSubmit(@RequestBody Map<String, String> table) {
@@ -45,13 +52,33 @@ public class FeedbackController {
 		feedback.setFeedbackDate(time);
 		
 		String isSuccess = "";
+		int status = 0;
 		if (feedbackMapper.insert(feedback) != 0)
 			isSuccess = "提交成功";
-		else
+		else {
+			status = 1;
 			isSuccess = "提交失败";
+		}
 		
-		return JsonUtil.basicError(0, isSuccess);
+		return JsonUtil.basicError(status, isSuccess);
 	}
 	
+	/** -用户查询历史反馈记录- 
+	 *  用户id
+	 *  反馈生成id
+	 *  反馈类型
+	 *  反馈提交时间
+	 */
+	@ResponseBody
+	@RequestMapping("submitHistory")
+	public String submitHistory(Long userId) {
+		Feedback feedback = new Feedback();
+		// 获取所有信息，再逐个筛选
+		List<Feedback> fbList = feedbackMapper.selectByuserId(userId);
+		String submitHistoryString = JsonUtil.toJson(fbList);
+		// System.out.println(JsonUtil.basic(fbList));
+		
+		return JsonUtil.basic(fbList);
+	}
 	
 }
