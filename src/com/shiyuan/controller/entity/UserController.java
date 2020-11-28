@@ -42,7 +42,7 @@ public class UserController {
 	public String register(@RequestBody User user) {
 		Long userAccount = user.getUserAccount();
 		String userPassword = user.getUserPassword();
-		System.out.println(userAccount + "-" + userPassword );
+		System.out.println("用户注册  account-" + userAccount + "     password-" + userPassword );
 		if (userAccount == null || userAccount.toString().length() > 11 || userAccount.toString().length() == 0) {
 			return JsonUtil.basicError(2,"length --- 0 < userAccount < 12   userAccount is " + userAccount);
 		}
@@ -67,7 +67,7 @@ public class UserController {
 		}
 		String userAccount = person.get("userAccount").toString();
 		String userPassword = person.get("userPassword").toString();
-		System.out.println(userAccount + "-" + userPassword );
+		System.out.println("用户登陆  account-" + userAccount + "     password-" + userPassword );
 		if (userAccount == null || userAccount.toString().length() > 11 || userAccount.toString().length() == 0) {
 			return JsonUtil.basicError(2,"length --- 0 < userAccount < 12   userAccount is " + userAccount);
 		}
@@ -86,7 +86,7 @@ public class UserController {
 	
 	
 	/**
-	 * 上传用户头像 示例用 ，暂无实际用途
+	 * 更改用户头像
 	 * 
 	 * @param file         文件
 	 * @param userid       用户id
@@ -96,13 +96,15 @@ public class UserController {
 	 * @throws IOException
 	 */
 	@ResponseBody
-	@PostMapping("uploadicon")
-	public String fileUpload(HttpServletRequest request, @RequestParam("icon") CommonsMultipartFile file, Long userid,
+	@PostMapping("changeicon")
+	public String changeIcon(HttpServletRequest request, @RequestParam("icon") CommonsMultipartFile file, Long userid,
 			String userpassword) throws IllegalStateException, IOException {
+		System.out.println("用户     " + userid + "  更换头像");
 		userExample = new UserExample();
 		userExample.createCriteria().andUserIdEqualTo(userid).andUserPasswordEqualTo(userpassword);
 		List<User> result = userMapper.selectByExample(userExample);
 		if (result.isEmpty()) {
+			System.out.println("用户     " + userid + "  更换头像   ---用户不存在");
 			return JsonUtil.basicError(1,"找不到用户，请确认id和password是否正确");
 		} else {
 
@@ -115,8 +117,6 @@ public class UserController {
 		
 		User user = result.get(0);
 		String  originalFilePath = "resource/" + user.getUserIcon();
-		user.setUserIcon("image/usericon/" + filename);
-		userMapper.updateByPrimaryKey(user);
 
 		String filepathString = "resource/image/usericon/" + filename;
 		String tempPath = request.getServletContext().getRealPath("/WEB-INF/") + filepathString;
@@ -132,6 +132,10 @@ public class UserController {
 		//删除旧文件
 		FileUtil.deleteFile(orginalFileFillPath);
 		FileUtil.deleteFile(orginalFileFillProjectPath);
+		
+
+		user.setUserIcon("image/usericon/" + filename);
+		userMapper.updateByPrimaryKey(user);
 		return JsonUtil.basic(user);
 		}
 	}

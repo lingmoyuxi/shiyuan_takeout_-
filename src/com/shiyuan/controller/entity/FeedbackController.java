@@ -75,14 +75,13 @@ public class FeedbackController {
 		Feedback feedback = new Feedback();
 		// 获取所有信息，再逐个筛选
 		List<Feedback> fbList = feedbackMapper.selectByuserId(userId);
-		String submitHistoryString = JsonUtil.toJson(fbList);
 		// System.out.println(JsonUtil.basic(fbList));
 		// return JsonUtil.basic(JsonUtil.toJson(fbList));
-		return JsonUtil.basicError(0, submitHistoryString);
 		
 		//toJson() 方法是将类属性或转换成Json数据，basic()方法及basic()方法会自己调用toJson()方法处理
 		//return JsonUtil.basic(fbList); // 可以直接用basic将结果返回                             basicError应该用来处理出错的，
 		
+		return JsonUtil.basic(fbList);
 	}
 	
 }
