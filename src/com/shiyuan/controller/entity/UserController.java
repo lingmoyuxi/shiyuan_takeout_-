@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +19,8 @@ import com.shiyuan.model.UserExample.Criteria;
 import com.shiyuan.util.JsonUtil;
 import com.shiyuan.util.RandomUtil;
 
+//跨域传输
+@CrossOrigin
 @Controller
 @RequestMapping(produces = {"application/json;charset=UTF-8"})
 public class UserController {
@@ -34,6 +38,10 @@ public class UserController {
 	@RequestMapping(value = "login")
 	public String login(@RequestBody Map<String, String> person) {
 		userExample.clear();
+		if (person == null ||person.isEmpty()) {
+			System.out.println("未接受到参数");
+			return JsonUtil.basicError(1, "未接受到参数");
+		}
 		String userAccount = person.get("userAccount").toString();
 		String userPassword = person.get("userPassword").toString();
 		System.out.println(userAccount + "-" + userPassword );

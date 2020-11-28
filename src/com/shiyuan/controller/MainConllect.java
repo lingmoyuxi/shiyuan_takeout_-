@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 
 //import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +24,8 @@ import com.shiyuan.model.UserExample;
 import com.shiyuan.util.FileUtil;
 import com.shiyuan.util.JsonUtil;
 
+//¿çÓò´«Êä
+@CrossOrigin
 @Controller
 @RequestMapping(produces = { "application/json;charset=UTF-8" })
 public class MainConllect {
