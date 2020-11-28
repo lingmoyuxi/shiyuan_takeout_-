@@ -95,9 +95,29 @@ public class FileUtil {
 
 	}
 	
+	/**
+	 * 删除文件
+	 * @param file
+	 */
+	public static void deleteFile(final File file) {
+		new Runnable() {
+			@Override
+			public void run() {
+				// TODO 自动生成的方法存根
+				if(file.exists() && !file.isDirectory()) {
+					file.delete();
+				}
+			}
+		}.run();
+	}
 	
-	
-	
+	/**
+	 * 删除文件
+	 * @param filePath
+	 */
+	public static void deleteFile(String filePath) {
+		deleteFile(new File(filePath));
+	}
 	
 	
 	

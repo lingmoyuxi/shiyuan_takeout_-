@@ -67,46 +67,46 @@ public class MainConllect {
 				+ ",\"filePath\":\"" + "resource/" + filetypeString + file.getOriginalFilename() + "\"}");
 	}
 
-	/**
-	 * 上传用户头像 示例用 ，暂无实际用途
-	 * 
-	 * @param file         文件
-	 * @param userid       用户id
-	 * @param userpassword 用户密码
-	 * @return 用户对象
-	 * @throws IllegalStateException
-	 * @throws IOException
-	 */
-	@ResponseBody
-	@PostMapping("uploadicon")
-	public String fileUpload(HttpServletRequest request, @RequestParam("icon") CommonsMultipartFile file, Long userid,
-			String userpassword) throws IllegalStateException, IOException {
-//		userExample = new UserExample();
-//		userExample.createCriteria().andUserIdEqualTo(userid).andUserPasswordEqualTo(userpassword);
-//		List<User> result = userMapper.selectByExample(userExample);
-//		if (result.isEmpty()) {
-//			return JsonUtil.basicError(1,"找不到用户，请确认id和password是否正确");
-//		} else {
-
-		//配置文件名  一用户一头像。推荐使用 userId.png 格式
-//			String filename = new Date().getTime() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-		//file.getOriginalFilename() 获取的是接收的文件名  例如 dsadsads.png  使用String.split()  以 .  分割，获取文件后缀  组合成 如 userId.png 格式
-		String[] split = file.getOriginalFilename().split("\\.");
-		String filename = new Date().getTime() + "." + split[split.length - 1];  
-		
-		User user = new User();
-		user.setUserIcon("resource/image/usericon/" + filename);
-//			userMapper.updateByPrimaryKey(user);
-
-//		String filepathString = "resource/image/usericon/" + filename;
-//		String tempPath = request.getServletContext().getRealPath("/WEB-INF/") + filepathString;
-//		final String projectPath = FileUtil.getPath(request) + filepathString;
+//	/**
+//	 * 上传用户头像 示例用 ，暂无实际用途
+//	 * 
+//	 * @param file         文件
+//	 * @param userid       用户id
+//	 * @param userpassword 用户密码
+//	 * @return 用户对象
+//	 * @throws IllegalStateException
+//	 * @throws IOException
+//	 */
+//	@ResponseBody
+//	@PostMapping("uploadicon")
+//	public String fileUpload(HttpServletRequest request, @RequestParam("icon") CommonsMultipartFile file, Long userid,
+//			String userpassword) throws IllegalStateException, IOException {
+////		userExample = new UserExample();
+////		userExample.createCriteria().andUserIdEqualTo(userid).andUserPasswordEqualTo(userpassword);
+////		List<User> result = userMapper.selectByExample(userExample);
+////		if (result.isEmpty()) {
+////			return JsonUtil.basicError(1,"找不到用户，请确认id和password是否正确");
+////		} else {
 //
-//		final File f = FileUtil.creatFileAndDir(tempPath);
-//		file.transferTo(f);
-//		FileUtil.copyFile(f, projectPath);// File,String 写法 2		
-		return JsonUtil.basic(user);
-//		}
-	}
+//		//配置文件名  一用户一头像。推荐使用 userId.png 格式
+////			String filename = new Date().getTime() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+//		//file.getOriginalFilename() 获取的是接收的文件名  例如 dsadsads.png  使用String.split()  以 .  分割，获取文件后缀  组合成 如 userId.png 格式
+//		String[] split = file.getOriginalFilename().split("\\.");
+//		String filename = new Date().getTime() + "." + split[split.length - 1];  
+//		
+//		User user = new User();
+//		user.setUserIcon("resource/image/usericon/" + filename);
+////			userMapper.updateByPrimaryKey(user);
+//
+////		String filepathString = "resource/image/usericon/" + filename;
+////		String tempPath = request.getServletContext().getRealPath("/WEB-INF/") + filepathString;
+////		final String projectPath = FileUtil.getPath(request) + filepathString;
+////
+////		final File f = FileUtil.creatFileAndDir(tempPath);
+////		file.transferTo(f);
+////		FileUtil.copyFile(f, projectPath);// File,String 写法 2		
+//		return JsonUtil.basic(user);
+////		}
+//	}
 
 }
