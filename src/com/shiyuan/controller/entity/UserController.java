@@ -52,9 +52,10 @@ public class UserController {
 	 */
 	@ResponseBody
 	@RequestMapping("register")
-	public String register(@RequestBody User user) {
-		Long userAccount = user.getUserAccount();
-		String userPassword = user.getUserPassword();
+	public String register(@RequestBody Map<String, String> person) {
+		String accountString = person.get("userAccount").toString();
+		Long userAccount = Long.valueOf(accountString);
+		String userPassword = person.get("userPassword").toString();
 		System.out.println("用户注册  account-" + userAccount + "     password-" + userPassword );
 		if (userAccount == null || userAccount.toString().length() > 11 || userAccount.toString().length() == 0) {
 			return JsonUtil.basicError(2,"length --- 0 < userAccount < 12   userAccount is " + userAccount);
@@ -62,12 +63,15 @@ public class UserController {
 		if (userPassword == null || userPassword.isEmpty() || userPassword.length() > 16 || userPassword.length() == 0) {
 			return JsonUtil.basicError(2,"length --- 0 < userPassword < 16  userPassword is " + userPassword);
 		}
+		userExample.clear();
 		Criteria criteria = userExample.createCriteria();
 		criteria.andUserAccountEqualTo(userAccount);
 		if (!userMapper.selectByExample(userExample).isEmpty()) {
-			return JsonUtil.basicError(2, "用户已存在");
+			return JsonUtil.basicError(1, "用户已存在");
 		}
-		return createUser(user.getUserName(), user.getUserAccount(), user.getUserPassword(), user.getUserIcon());
+		User user = newUser(userAccount, userPassword);
+		int insert = userMapper.insert(user);
+		return insert==1?JsonUtil.basic(user):JsonUtil.basicError(3, "添加用户失败");
 	}
 	
 	/**
