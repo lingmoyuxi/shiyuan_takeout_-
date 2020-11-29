@@ -75,12 +75,90 @@ public class UserController {
 	}
 	
 	/**
+	 * QQ注册
+	 * @param person  userName  userQqKey
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("registerqq")
+	public String registerQQ(@RequestBody Map<String, String> person) {
+		String userName = person.get("userName").toString();
+		String userQqKeyString = person.get("userQqKey");
+		if (userQqKeyString == null || userQqKeyString.isEmpty()) {
+			return JsonUtil.basicError(2,"空QQKey  userQqKeyString is " + userQqKeyString);
+		}
+		String userQqKey = userQqKeyString.toString();
+		
+		System.out.println("用户QQ注册  userName-" + userName + "     userQqKey-" + userQqKey );
+		
+		userExample.clear();
+		userExample.createCriteria().andUserQqKeyEqualTo(userQqKey);
+		List<User> users = userMapper.selectByExample(userExample);
+		if (users.isEmpty()) {  //未被绑定
+			User user = newUser(userName,RandomUtil.randomNumber(11), RandomUtil.randomString(16));
+			user.setUserQqKey(userQqKey);
+			
+			Thirdlogin thirdlogin = new Thirdlogin();
+			thirdlogin.setThirdloginId(RandomUtil.randomNumber(16));
+			thirdlogin.setThirdloginKey(userQqKey);
+			thirdlogin.setUserId(user.getUserId());
+			int i = thirdLoginMapper.insert(thirdlogin);
+			if (i!=1) {
+				return JsonUtil.basicError(3,"未记录QQKey，且试图创建绑定依赖失败");
+			}
+			int insert = userMapper.insert(user);
+			return insert == 1?JsonUtil.basic(user):JsonUtil.basicError(3, "创建初始化用户失败");
+		} else {
+			return JsonUtil.basicError(2,"该QQ已经被绑定过，无法重新注册 ");
+		}
+	}
+	
+	/**
+	 * 微信注册
+	 * @param person  userName  userQqKey
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("registerwx")
+	public String registerwx(@RequestBody Map<String, String> person) {
+		String userName = person.get("userName").toString();
+		String userWeixinKeyString = person.get("userWeixinKey");
+		if (userWeixinKeyString == null || userWeixinKeyString.isEmpty()) {
+			return JsonUtil.basicError(2,"空微信Key  userWeixinKey is " + userWeixinKeyString);
+		}
+		String userWeixinKey = userWeixinKeyString.toString();
+		
+		System.out.println("用户微信注册  userName-" + userName + "     userQqKey-" + userWeixinKey );
+		
+		userExample.clear();
+		userExample.createCriteria().andUserWeixinKeyEqualTo(userWeixinKey);
+		List<User> users = userMapper.selectByExample(userExample);
+		if (users.isEmpty()) {  //未被绑定
+			User user = newUser(userName,RandomUtil.randomNumber(11), RandomUtil.randomString(16));
+			user.setUserWeixinKey(userWeixinKey);
+			
+			Thirdlogin thirdlogin = new Thirdlogin();
+			thirdlogin.setThirdloginId(RandomUtil.randomNumber(16));
+			thirdlogin.setThirdloginKey(userWeixinKey);
+			thirdlogin.setUserId(user.getUserId());
+			int i = thirdLoginMapper.insert(thirdlogin);
+			if (i!=1) {
+				return JsonUtil.basicError(3,"未记录微信Key，且试图创建绑定依赖失败");
+			}
+			int insert = userMapper.insert(user);
+			return insert == 1?JsonUtil.basic(user):JsonUtil.basicError(3, "创建初始化用户失败");
+		} else {
+			return JsonUtil.basicError(2,"该微信已经被绑定过，无法重新注册 ");
+		}
+	}
+	
+	/**
 	 * 用户登陆
 	 * @param person   userAccount账号  userPassword密码
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "login")
+	@RequestMapping("login")
 	public String login(@RequestBody Map<String, String> person) {
 		userExample.clear();
 		if (person == null ||person.isEmpty()) {
@@ -104,6 +182,94 @@ public class UserController {
 		criteria.andUserPasswordEqualTo(userPassword);
 		List<User> selectByExample = userMapper.selectByExample(userExample);
 		return selectByExample.isEmpty()?JsonUtil.basicError(1, "用户名或密码不正确") : JsonUtil.basic(selectByExample.get(0));
+	}
+	
+	/**
+	 * QQ登陆
+	 * @param person userQqKey
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("loginqq")
+	public String loginqq(@RequestBody Map<String, String> person) {
+		if (person == null ||person.isEmpty()) {
+			System.out.println("未接受到参数");
+			return JsonUtil.basicError(1, "未接受到参数");
+		}
+		
+		String userQqKey = person.get("userQqKey").toString();
+		
+		System.out.println("用户QQ登陆  qqKey-" + userQqKey);
+		if (userQqKey == null || userQqKey.length() == 0) {
+			return JsonUtil.basicError(2,"userQqKey is " + userQqKey);
+		}
+		thirdloginExample.clear();
+		thirdloginExample.createCriteria().andThirdloginKeyEqualTo(userQqKey);
+		List<Thirdlogin> thirdlogins = thirdLoginMapper.selectByExample(thirdloginExample);
+		if (thirdlogins == null|| thirdlogins.size() == 0) {
+			User createUser = newUser(RandomUtil.randomNumber(11), RandomUtil.randomString(16));
+			createUser.setUserQqKey(userQqKey);
+			
+			Thirdlogin thirdlogin = new Thirdlogin();
+			thirdlogin.setThirdloginId(RandomUtil.randomNumber(16));
+			thirdlogin.setThirdloginKey(userQqKey);
+			thirdlogin.setUserId(createUser.getUserId());
+			int i = thirdLoginMapper.insert(thirdlogin);
+			if (i!=1) {
+				return JsonUtil.basicError(3,"未记录QQKey，且试图创建绑定依赖失败");
+			}
+			int insert = userMapper.insert(createUser);
+			return insert==1?JsonUtil.basic(createUser):JsonUtil.basicError(3,"未记录QQKey，且试图创建初始化用户失败");
+		} else {
+			userExample.clear();
+			userExample.createCriteria().andUserIdEqualTo(thirdlogins.get(0).getUserId()).andUserQqKeyEqualTo(userQqKey);
+			List<User> users = userMapper.selectByExample(userExample);
+			return users.isEmpty()?JsonUtil.basicError(1, "用户不存在"):JsonUtil.basic(users.get(0));
+		}
+	}
+	
+	/**
+	 * 微信登陆
+	 * @param person userWeixinKey
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("loginwx")
+	public String loginwx(@RequestBody Map<String, String> person) {
+		if (person == null ||person.isEmpty()) {
+			System.out.println("未接受到参数");
+			return JsonUtil.basicError(1, "未接受到参数");
+		}
+		
+		String userWeixinKey = person.get("userWeixinKey").toString();
+		
+		System.out.println("用户微信登陆  wxKey-" + userWeixinKey);
+		if (userWeixinKey == null || userWeixinKey.length() == 0) {
+			return JsonUtil.basicError(2,"userQqKey is " + userWeixinKey);
+		}
+		thirdloginExample.clear();
+		thirdloginExample.createCriteria().andThirdloginKeyEqualTo(userWeixinKey);
+		List<Thirdlogin> thirdlogins = thirdLoginMapper.selectByExample(thirdloginExample);
+		if (thirdlogins == null|| thirdlogins.size() == 0) {
+			User createUser = newUser(RandomUtil.randomNumber(11), RandomUtil.randomString(16));
+			createUser.setUserWeixinKey(userWeixinKey);
+			
+			Thirdlogin thirdlogin = new Thirdlogin();
+			thirdlogin.setThirdloginId(RandomUtil.randomNumber(16));
+			thirdlogin.setThirdloginKey(userWeixinKey);
+			thirdlogin.setUserId(createUser.getUserId());
+			int i = thirdLoginMapper.insert(thirdlogin);
+			if (i!=1) {
+				return JsonUtil.basicError(3,"未记录wxKey，且试图创建绑定依赖失败");
+			}
+			int insert = userMapper.insert(createUser);
+			return insert==1?JsonUtil.basic(createUser):JsonUtil.basicError(3,"未记录wxKey，且试图创建初始化用户失败");
+		} else {
+			userExample.clear();
+			userExample.createCriteria().andUserIdEqualTo(thirdlogins.get(0).getUserId()).andUserWeixinKeyEqualTo(userWeixinKey);
+			List<User> users = userMapper.selectByExample(userExample);
+			return users.isEmpty()?JsonUtil.basicError(1, "用户不存在"):JsonUtil.basic(users.get(0));
+		}
 	}
 	
 	
@@ -171,22 +337,24 @@ public class UserController {
 	public String changePassword(@RequestBody Map<String, String> person) {
 		String userId = person.get("userId").toString();
 		String userPassword = person.get("userPassword").toString();
-		System.out.println(String.format("用户   %s  尝试更改密码为  %s",userId,userPassword));
+		String newPassword = person.get("newPassword").toString();
+		System.out.println(String.format("用户   %s  尝试更改密码为  %s",userId,newPassword));
 		if (userPassword == null || userPassword.isEmpty() || userPassword.length() > 16 || userPassword.length() == 0) {
 			return JsonUtil.basicError(2,"length --- 0 < userPassword < 17  userPassword is " + userPassword);
 		}
-		userExample = new UserExample();
-		userExample.createCriteria().andUserIdEqualTo(Long.valueOf(userId));
+		userExample.clear();
+		userExample.createCriteria().andUserIdEqualTo(Long.valueOf(userId)).andUserPasswordEqualTo(userPassword);
 		List<User> result = userMapper.selectByExample(userExample);
 		if (result.isEmpty()) {
-			return JsonUtil.basicError(1,"找不到用户");
+			System.out.println("密码错误");
+			return JsonUtil.basicError(1,"旧密码错误");
 		} else {
 			User user2 = result.get(0);
-			if (userPassword.equals(user2.getUserPassword())) {
+			if (newPassword.equals(user2.getUserPassword())) {
 				return JsonUtil.basic(0,user2,"密码已更改(新密码与原密码一致)");
 			}
-			user2.setUserPassword(userPassword);
-			
+			user2.setUserPassword(newPassword);
+			System.out.println("更改密码为" + newPassword);
 			int i = userMapper.updateByPrimaryKey(user2);
 			return i > 0 ? JsonUtil.basic(user2):JsonUtil.basicError(3, "数据更新异常");
 		}
@@ -457,7 +625,7 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("adduser")
 	public String addUser(@RequestBody User user) {
-		return createUser(user.getUserName(), user.getUserAccount(), user.getUserPassword(), user.getUserIcon());
+		return createUser(user.getUserName(), user.getUserAccount(), user.getUserPassword());
 //		int insert = userMapper.insert(user);
 //		return insert == 1?JsonUtil.basic(0, user, null):JsonUtil.basic(-1,null ,"添加失败  --   Class UserController|method addUser");
 	}
@@ -467,7 +635,7 @@ public class UserController {
 	
 	
 	
-	public String createUser(String name,Long account,String password,String icon) {
+	public String createUser(String name,Long account,String password) {
 		if (name == null ||name.isEmpty() ||name.length() == 0) {
 			name = String.format("食苑%d", RandomUtil.randomNumber(6));
 		}
@@ -477,12 +645,7 @@ public class UserController {
 		if (password == null || password.isEmpty() || password.length() > 16 || password.length() == 0) {
 			return JsonUtil.basicError(2,"length --- 0 < userPassword < 16");
 		}
-		User user = new User();
-		user.setUserId(RandomUtil.randomNumber(16));
-		user.setUserName(name);
-		user.setUserAccount(account);
-		user.setUserPassword(password);
-		user.setUserIcon("/image/default/defaultIcon.jpeg");
+		User user = newUser(name, account, password);
 		int insert = userMapper.insert(user);
 		return JsonUtil.basic(0, insert == 1?user:null, null);
 	}
