@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.shiyuan.mapper.ThirdloginMapper;
 import com.shiyuan.mapper.UserMapper;
+import com.shiyuan.model.Thirdlogin;
+import com.shiyuan.model.ThirdloginExample;
 import com.shiyuan.model.User;
 import com.shiyuan.model.UserExample;
 import com.shiyuan.model.UserExample.Criteria;
@@ -37,6 +40,16 @@ public class UserController {
 	UserMapper userMapper;
 	UserExample userExample = new UserExample();
 	
+	@Autowired
+	ThirdloginMapper thirdLoginMapper;
+	ThirdloginExample thirdloginExample = new ThirdloginExample();
+	
+	
+	/**
+	 * 用户注册 
+	 * @param user  userAccount账号  userPassword密码
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("register")
 	public String register(@RequestBody User user) {
@@ -57,6 +70,11 @@ public class UserController {
 		return createUser(user.getUserName(), user.getUserAccount(), user.getUserPassword(), user.getUserIcon());
 	}
 	
+	/**
+	 * 用户登陆
+	 * @param person   userAccount账号  userPassword密码
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "login")
 	public String login(@RequestBody Map<String, String> person) {
@@ -107,7 +125,6 @@ public class UserController {
 			System.out.println("用户     " + userid + "  更换头像   ---用户不存在");
 			return JsonUtil.basicError(1,"找不到用户，请确认id和password是否正确");
 		} else {
-
 		//配置文件名  一用户一头像。推荐使用 userId.png 格式
 //			String filename = new Date().getTime() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
 		//file.getOriginalFilename() 获取的是接收的文件名  例如 dsadsads.png  使用String.split()  以 .  分割，获取文件后缀  组合成 如 userId.png 格式
@@ -242,6 +259,170 @@ public class UserController {
 		}
 	}
 	
+	/**
+	 * 用户绑定QQ
+	 * @param person  userId  userQqKey
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("userbindqq")
+	public String qqBind(@RequestBody Map<String, String> person) {
+		String userId = person.get("userId").toString();
+		String userQqKey = person.get("userQqKey").toString();
+		System.out.println(String.format("用户   %s  尝试更改绑定QQ  %s",userId,userQqKey));
+		userExample.clear();
+		userExample.createCriteria().andUserIdEqualTo(Long.valueOf(userId));
+		List<User> result = userMapper.selectByExample(userExample);
+		if (result.isEmpty()) {
+			return JsonUtil.basicError(1,"找不到用户");
+		} else {
+			User user = result.get(0);
+			String qqKeyString = user.getUserQqKey();
+			if (qqKeyString == null || qqKeyString.isEmpty() || qqKeyString.length() == 0) {
+				Thirdlogin thirdlogin = new Thirdlogin();
+				thirdlogin.setThirdloginId(RandomUtil.randomNumber(16));
+				thirdlogin.setThirdloginKey(userQqKey);
+				thirdlogin.setUserId(user.getUserId());
+				thirdLoginMapper.insert(thirdlogin);
+			} else {
+				thirdloginExample.clear();
+				thirdloginExample.createCriteria().andUserIdEqualTo(user.getUserId()).andThirdloginKeyEqualTo(qqKeyString);
+				List<Thirdlogin> selectByExample = thirdLoginMapper.selectByExample(thirdloginExample);
+				Thirdlogin thirdlogin = selectByExample.get(0);
+				thirdlogin.setThirdloginKey(userQqKey);
+				thirdLoginMapper.updateByPrimaryKey(thirdlogin);
+			}
+			user.setUserQqKey(userQqKey);
+			
+			int i = userMapper.updateByPrimaryKey(user);
+			return i > 0 ? JsonUtil.basic(user):JsonUtil.basicError(3, "数据更新异常");
+		}
+	}
+	
+	
+	/**
+	 * 用户绑定QQ
+	 * @param person  userId  userWeixinKey
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("userbindwx")
+	public String wxBind(@RequestBody Map<String, String> person) {
+		String userId = person.get("userId").toString();
+		String userWeixinKey = person.get("userWeixinKey").toString();
+		System.out.println(String.format("用户   %s  尝试更改绑定微信  %s",userId,userWeixinKey));
+		userExample.clear();
+		userExample.createCriteria().andUserIdEqualTo(Long.valueOf(userId));
+		List<User> result = userMapper.selectByExample(userExample);
+		if (result.isEmpty()) {
+			return JsonUtil.basicError(1,"找不到用户");
+		} else {
+			User user = result.get(0);
+			String wxKeyString = user.getUserWeixinKey();
+			if (wxKeyString == null || wxKeyString.isEmpty() || wxKeyString.length() == 0) {
+				Thirdlogin thirdlogin = new Thirdlogin();
+				thirdlogin.setThirdloginId(RandomUtil.randomNumber(16));
+				thirdlogin.setThirdloginKey(userWeixinKey);
+				thirdlogin.setUserId(user.getUserId());
+				thirdLoginMapper.insert(thirdlogin);
+			} else {
+				thirdloginExample.clear();
+				thirdloginExample.createCriteria().andUserIdEqualTo(user.getUserId()).andThirdloginKeyEqualTo(wxKeyString);
+				List<Thirdlogin> selectByExample = thirdLoginMapper.selectByExample(thirdloginExample);
+				Thirdlogin thirdlogin = selectByExample.get(0);
+				thirdlogin.setThirdloginKey(userWeixinKey);
+				thirdLoginMapper.updateByPrimaryKey(thirdlogin);
+			}
+			user.setUserWeixinKey(userWeixinKey);
+			
+			int i = userMapper.updateByPrimaryKey(user);
+			return i > 0 ? JsonUtil.basic(user):JsonUtil.basicError(3, "数据更新异常");
+		}
+	}
+	
+	
+	
+	/**
+	 * 用户解除绑定QQ
+	 * @param person  userId  userQqKey
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("usernobindqq")
+	public String qqNoBind(@RequestBody Map<String, String> person) {
+		String userId = person.get("userId").toString();
+		System.out.println(String.format("用户   %s  尝试解除绑定QQ",userId));
+		userExample.clear();
+		userExample.createCriteria().andUserIdEqualTo(Long.valueOf(userId));
+		List<User> result = userMapper.selectByExample(userExample);
+		if (result.isEmpty()) {
+			return JsonUtil.basicError(1,"找不到用户");
+		} else {
+			User user = result.get(0);
+			String qqKeyString = user.getUserQqKey();
+			thirdloginExample.clear();
+			thirdloginExample.createCriteria().andUserIdEqualTo(user.getUserId()).andThirdloginKeyEqualTo(qqKeyString);
+			List<Thirdlogin> selectByExample = thirdLoginMapper.selectByExample(thirdloginExample);
+			Thirdlogin thirdlogin = selectByExample.get(0);
+			thirdLoginMapper.deleteByPrimaryKey(thirdlogin.getThirdloginId());
+			user.setUserQqKey(null);
+			int i = userMapper.updateByPrimaryKey(user);
+			return i > 0 ? JsonUtil.basic(user):JsonUtil.basicError(3, "数据更新异常");
+		}
+	}
+	
+	
+	/**
+	 * 用户绑定QQ
+	 * @param person  userId  userWeixinKey
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("usernobindwx")
+	public String wxNoBind(@RequestBody Map<String, String> person) {
+		String userId = person.get("userId").toString();
+		System.out.println(String.format("用户   %s  尝试解除绑定微信",userId));
+		userExample.clear();
+		userExample.createCriteria().andUserIdEqualTo(Long.valueOf(userId));
+		List<User> result = userMapper.selectByExample(userExample);
+		if (result.isEmpty()) {
+			return JsonUtil.basicError(1,"找不到用户");
+		} else {
+			User user = result.get(0);
+			String wxKeyString = user.getUserWeixinKey();
+			thirdloginExample.clear();
+			thirdloginExample.createCriteria().andUserIdEqualTo(user.getUserId()).andThirdloginKeyEqualTo(wxKeyString);
+			List<Thirdlogin> selectByExample = thirdLoginMapper.selectByExample(thirdloginExample);
+			Thirdlogin thirdlogin = selectByExample.get(0);
+			thirdLoginMapper.deleteByPrimaryKey(thirdlogin.getThirdloginId());
+			user.setUserWeixinKey(null);
+			
+			int i = userMapper.updateByPrimaryKey(user);
+			return i > 0 ? JsonUtil.basic(user):JsonUtil.basicError(3, "数据更新异常");
+		}
+	}
+	
+	
+	@ResponseBody
+	@PostMapping("changedromroom")
+	public String userDromRoom(@RequestBody Map<String, String> person) {
+		String userId = person.get("userId").toString();
+		String userDromRoom = person.get("userDromRoom").toString();
+		System.out.println(String.format("用户   %s  尝试更改宿舍楼栋为 %s",userId,userDromRoom));
+		userExample.clear();
+		userExample.createCriteria().andUserIdEqualTo(Long.valueOf(userId));
+		List<User> result = userMapper.selectByExample(userExample);
+		if (result.isEmpty()) {
+			return JsonUtil.basicError(1,"找不到用户");
+		} else {
+			User user = result.get(0);
+			user.setUserDromRoom(userDromRoom);
+			int i = userMapper.updateByPrimaryKey(user);
+			return i > 0 ? JsonUtil.basic(user):JsonUtil.basicError(3, "数据更新异常");
+		}
+	}
+	
+	
 	
 	/**
 	 * 获取所有用户
@@ -251,6 +432,17 @@ public class UserController {
 	@RequestMapping("getusers")
 	public String getUsers() {
 		return JsonUtil.basic(userMapper.selectByExample(null));
+	}
+	
+	
+	/**
+	 * 获取  用户 (从所有user中抽取而来)
+	 * @return 
+	 */
+	@ResponseBody
+	@RequestMapping("getusersoflength")
+	public String getUsers(int length) {
+		return JsonUtil.basic(RandomUtil.randomList(userMapper.selectByExample(null), length));
 	}
 	
 	/**
@@ -286,10 +478,24 @@ public class UserController {
 		user.setUserName(name);
 		user.setUserAccount(account);
 		user.setUserPassword(password);
-		user.setUserIcon("http://localhost:8080/background-server/image/usericon/1606212168222.79059953_p0.png");
-//		user.setUserIcon(icon);
+		user.setUserIcon("/image/default/defaultIcon.jpeg");
 		int insert = userMapper.insert(user);
 		return JsonUtil.basic(0, insert == 1?user:null, null);
 	}
 	
+	public User newUser(String name,Long account,String password) {
+		if (name == null ||name.isEmpty() ||name.length() == 0) {
+			name = String.format("食苑%d", RandomUtil.randomNumber(6));
+		}
+		User user = new User();
+		user.setUserId(RandomUtil.randomNumber(16));
+		user.setUserName(name);
+		user.setUserAccount(account);
+		user.setUserPassword(password);
+		user.setUserIcon("/image/default/defaultIcon.jpeg");
+		return user;
+	}
+	public User newUser(Long account,String password) {
+		return newUser(null,account, password);
+	}
 }

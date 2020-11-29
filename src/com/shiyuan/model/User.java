@@ -17,6 +17,10 @@ public class User {
 
     private String userWeixinKey;
 
+    private String userSchool;
+
+    private String userDromRoom;
+
     public Long getUserId() {
         return userId;
     }
@@ -79,5 +83,21 @@ public class User {
 
     public void setUserWeixinKey(String userWeixinKey) {
         this.userWeixinKey = userWeixinKey;
+    }
+
+    public String getUserSchool() {
+        return userSchool;
+    }
+
+    public void setUserSchool(String userSchool) {
+        this.userSchool = userSchool;
+    }
+
+    public String getUserDromRoom() {
+        return userDromRoom;
+    }
+
+    public void setUserDromRoom(String userDromRoom) {
+        this.userDromRoom = userDromRoom;
     }
 }

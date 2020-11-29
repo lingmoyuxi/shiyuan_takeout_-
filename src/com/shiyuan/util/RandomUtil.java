@@ -1,6 +1,7 @@
 package com.shiyuan.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -42,23 +43,17 @@ public class RandomUtil {
 	 * @param length 抽取的数据长度（小与数组数据长度）
 	 * @return 随机抽取数组元素
 	 */
-	public static <T> ArrayList<T> randomList(List<T> arrayList, int length) {
-		
-		
-		int[] listIndex =new int[length]; // 此处打算用来排除 随机生成相同的数据   没弄出效果
-		int count = 0;
+	public static <T> List<T> randomList(List<T> list, int length) {
+		List<T> initList = new ArrayList<>();
+		initList.addAll(list);
+		List<T> resultList = new ArrayList<T>();
 		Random random=new Random();
-		ArrayList<T> resultList = new ArrayList<T>();
-		while (count < length) {
-			int number = random.nextInt(arrayList.size());
-			for (int s : listIndex) {
-	            if (s == number){
-	            	continue;
-	            }
-	        }
-			listIndex[count] = number;
-			resultList.add(arrayList.get(number));
-			count++;
+		while(resultList.size() < length) {
+			int number = random.nextInt(initList.size());
+			resultList.add(initList.get(number));
+			if (list.size() >= length) {  //如果数组长度大于等于length， 则保证返回的数组不会被重复抽取
+				initList.remove(number);
+			}
 		}
 		return resultList;
 	}

@@ -10,6 +10,8 @@
     <result column="user_phone_key" jdbcType="BIGINT" property="userPhoneKey" />
     <result column="user_qq_key" jdbcType="VARCHAR" property="userQqKey" />
     <result column="user_weixin_key" jdbcType="VARCHAR" property="userWeixinKey" />
+    <result column="user_school" jdbcType="VARCHAR" property="userSchool" />
+    <result column="user_drom_room" jdbcType="VARCHAR" property="userDromRoom" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -71,7 +73,7 @@
   </sql>
   <sql id="Base_Column_List">
     user_id, user_name, user_account, user_password, user_icon, user_phone_key, user_qq_key, 
-    user_weixin_key
+    user_weixin_key, user_school, user_drom_room
   </sql>
   <select id="selectByExample" parameterType="com.shiyuan.model.UserExample" resultMap="BaseResultMap">
     select
@@ -106,10 +108,12 @@
   <insert id="insert" parameterType="com.shiyuan.model.User">
     insert into user (user_id, user_name, user_account, 
       user_password, user_icon, user_phone_key, 
-      user_qq_key, user_weixin_key)
+      user_qq_key, user_weixin_key, user_school, 
+      user_drom_room)
     values (#{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{userAccount,jdbcType=BIGINT}, 
       #{userPassword,jdbcType=VARCHAR}, #{userIcon,jdbcType=VARCHAR}, #{userPhoneKey,jdbcType=BIGINT}, 
-      #{userQqKey,jdbcType=VARCHAR}, #{userWeixinKey,jdbcType=VARCHAR})
+      #{userQqKey,jdbcType=VARCHAR}, #{userWeixinKey,jdbcType=VARCHAR}, #{userSchool,jdbcType=VARCHAR}, 
+      #{userDromRoom,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.shiyuan.model.User">
     insert into user
@@ -138,6 +142,12 @@
       <if test="userWeixinKey != null">
         user_weixin_key,
       </if>
+      <if test="userSchool != null">
+        user_school,
+      </if>
+      <if test="userDromRoom != null">
+        user_drom_room,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -163,6 +173,12 @@
       </if>
       <if test="userWeixinKey != null">
         #{userWeixinKey,jdbcType=VARCHAR},
+      </if>
+      <if test="userSchool != null">
+        #{userSchool,jdbcType=VARCHAR},
+      </if>
+      <if test="userDromRoom != null">
+        #{userDromRoom,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -199,6 +215,12 @@
       <if test="record.userWeixinKey != null">
         user_weixin_key = #{record.userWeixinKey,jdbcType=VARCHAR},
       </if>
+      <if test="record.userSchool != null">
+        user_school = #{record.userSchool,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userDromRoom != null">
+        user_drom_room = #{record.userDromRoom,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -213,7 +235,9 @@
       user_icon = #{record.userIcon,jdbcType=VARCHAR},
       user_phone_key = #{record.userPhoneKey,jdbcType=BIGINT},
       user_qq_key = #{record.userQqKey,jdbcType=VARCHAR},
-      user_weixin_key = #{record.userWeixinKey,jdbcType=VARCHAR}
+      user_weixin_key = #{record.userWeixinKey,jdbcType=VARCHAR},
+      user_school = #{record.userSchool,jdbcType=VARCHAR},
+      user_drom_room = #{record.userDromRoom,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -242,6 +266,12 @@
       <if test="userWeixinKey != null">
         user_weixin_key = #{userWeixinKey,jdbcType=VARCHAR},
       </if>
+      <if test="userSchool != null">
+        user_school = #{userSchool,jdbcType=VARCHAR},
+      </if>
+      <if test="userDromRoom != null">
+        user_drom_room = #{userDromRoom,jdbcType=VARCHAR},
+      </if>
     </set>
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
@@ -253,7 +283,9 @@
       user_icon = #{userIcon,jdbcType=VARCHAR},
       user_phone_key = #{userPhoneKey,jdbcType=BIGINT},
       user_qq_key = #{userQqKey,jdbcType=VARCHAR},
-      user_weixin_key = #{userWeixinKey,jdbcType=VARCHAR}
+      user_weixin_key = #{userWeixinKey,jdbcType=VARCHAR},
+      user_school = #{userSchool,jdbcType=VARCHAR},
+      user_drom_room = #{userDromRoom,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
 </mapper>
