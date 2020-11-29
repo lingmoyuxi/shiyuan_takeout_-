@@ -75,62 +75,66 @@ public class FeedbackController {
 		// 创建一个图片路径数组
 		StringBuilder uploadpic = new StringBuilder();
 		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-		for (Map.Entry<String, MultipartFile> entry : fileMap.entrySet()) {
-			System.out.println(entry.getKey());
-			System.out.println(entry.getValue());
-			System.out.println(entry.getValue().getOriginalFilename());
-		}
 
-		if (fileNames.hasNext()) {
-			// request.getFiles(fileName)通过fileName这个Key，获得文件集合列表
-			List<MultipartFile> fileList = multipartRequest.getFiles("images");
-			if (fileList.size() > 0) {
-				// 遍历文件列表
-				Iterator<MultipartFile> fileIte = fileList.iterator();
-				int i = 0;
-				while (fileIte.hasNext()) {
-					// 获得每一个文件
-					MultipartFile eachFile = fileIte.next();
-					try {
-						// 格式化文件名 0.xxx 1.xxx 2.xxx
-						System.out.println(eachFile.getOriginalFilename());
-						String[] split = eachFile.getOriginalFilename().split("\\.");
+		System.out.println("总共有多少" + fileMap.size() + "个");
+		// 判断接收的文件是不是空，是就跳过，不是就取消
+		if (fileMap.size() > 0) {
+			// 路径数组添加数组符号
+			uploadpic.append("[");
+			int s = 0;
+			// 逐个接收文件
+			for (Map.Entry<String, MultipartFile> entry : fileMap.entrySet()) {
+				System.out.println(entry.getKey()); // 文件关键词
+				System.out.println(entry.getValue()); // 文件类
+				System.out.println(entry.getValue().getOriginalFilename()); // 文件原始文件名
+				// 获取文件名关键词
+				String fileKeyString = entry.getKey();
 
-						String filename = i + "." + split[split.length - 1];
+				// 获取文件
+				MultipartFile tmpFile = entry.getValue();
+				try {
+					// 格式化文件名
+					System.out.println("改名前的文件名：" + tmpFile.getOriginalFilename()); // 改名前的文件名
+					String[] split = tmpFile.getOriginalFilename().split("\\.");
+					String filenameFormat = s + "." + split[split.length - 1];
+					System.out.println("改名后的文件名：" + filenameFormat);
 
-						// 文件保存路径
-						// 格式：路径 + 用户id + 用户反馈生成id
-						String filePath = "resource/image/feedback/" + userId + "/"
-								+ feedback.getFeedbackId().toString() + "/" + filename;
+					String filePath = "resource/image/feedback/" + userId + "/" + feedback.getFeedbackId().toString() + "/"
+							+ filenameFormat;
 
-						// 文件缓存
-						final File tempfile = FileUtil
-								.creatFileAndDir(request.getServletContext().getRealPath("/WEB-INF/" + filePath));
+					// 文件缓存
+					final File tempfile = FileUtil
+							.creatFileAndDir(request.getServletContext().getRealPath("/WEB-INF/" + filePath));
 
-						// 转存文件
-						final File targetfile = new File(FileUtil.getPath(request) + filePath);
+					// 转存文件
+					final File targetfile = new File(FileUtil.getPath(request) + filePath);
 
-						// 首先保存到缓存目录，接着再保存到真正的文件目录中 
-						eachFile.transferTo(tempfile);
-						FileUtil.copyFile(tempfile, targetfile);
+					// 首先保存到缓存目录，接着再保存到真正的文件目录中
+					tmpFile.transferTo(tempfile);
+					FileUtil.copyFile(tempfile, targetfile);
 
-						// 删除缓存的文件 
-						FileUtil.deleteFile(tempfile);
+					// 删除缓存的文件
+					FileUtil.deleteFile(tempfile);
 
-						// 数组添加文件路径
+					// 数组添加文件路径
+					// 判断，如果为第0个时，不需要添加","
+					if (s != 0)
 						uploadpic.append(",");
-						uploadpic.append("image/feedback/" + userId + "/" + feedback.getFeedbackId().toString() + "/"
-								+ filename);
+					uploadpic.append(
+							"\"image/feedback/" + userId + "/" + feedback.getFeedbackId().toString() + "/" + filenameFormat + "\"");
 
-						System.out.println(tempfile.getPath());
-						i++;
-					} catch (Exception e) {
-						// TODO: handle exception
-						e.printStackTrace();
-					}
+					System.out.println(tempfile.getPath());
+					s++;
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
 				}
+
 			}
+			// 添加末尾数组符号
+			uploadpic.append("]");
 		}
+		
 
 		// 设置反馈图片路径
 		feedback.setFeedbackImage(uploadpic.toString());
