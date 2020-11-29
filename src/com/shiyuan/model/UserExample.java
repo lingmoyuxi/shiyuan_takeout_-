@@ -633,6 +633,146 @@ public class UserExample {
             addCriterion("user_weixin_key not between", value1, value2, "userWeixinKey");
             return (Criteria) this;
         }
+
+        public Criteria andUserSchoolIsNull() {
+            addCriterion("user_school is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSchoolIsNotNull() {
+            addCriterion("user_school is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSchoolEqualTo(String value) {
+            addCriterion("user_school =", value, "userSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSchoolNotEqualTo(String value) {
+            addCriterion("user_school <>", value, "userSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSchoolGreaterThan(String value) {
+            addCriterion("user_school >", value, "userSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSchoolGreaterThanOrEqualTo(String value) {
+            addCriterion("user_school >=", value, "userSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSchoolLessThan(String value) {
+            addCriterion("user_school <", value, "userSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSchoolLessThanOrEqualTo(String value) {
+            addCriterion("user_school <=", value, "userSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSchoolLike(String value) {
+            addCriterion("user_school like", value, "userSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSchoolNotLike(String value) {
+            addCriterion("user_school not like", value, "userSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSchoolIn(List<String> values) {
+            addCriterion("user_school in", values, "userSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSchoolNotIn(List<String> values) {
+            addCriterion("user_school not in", values, "userSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSchoolBetween(String value1, String value2) {
+            addCriterion("user_school between", value1, value2, "userSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserSchoolNotBetween(String value1, String value2) {
+            addCriterion("user_school not between", value1, value2, "userSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserDromRoomIsNull() {
+            addCriterion("user_drom_room is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserDromRoomIsNotNull() {
+            addCriterion("user_drom_room is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserDromRoomEqualTo(String value) {
+            addCriterion("user_drom_room =", value, "userDromRoom");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserDromRoomNotEqualTo(String value) {
+            addCriterion("user_drom_room <>", value, "userDromRoom");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserDromRoomGreaterThan(String value) {
+            addCriterion("user_drom_room >", value, "userDromRoom");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserDromRoomGreaterThanOrEqualTo(String value) {
+            addCriterion("user_drom_room >=", value, "userDromRoom");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserDromRoomLessThan(String value) {
+            addCriterion("user_drom_room <", value, "userDromRoom");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserDromRoomLessThanOrEqualTo(String value) {
+            addCriterion("user_drom_room <=", value, "userDromRoom");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserDromRoomLike(String value) {
+            addCriterion("user_drom_room like", value, "userDromRoom");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserDromRoomNotLike(String value) {
+            addCriterion("user_drom_room not like", value, "userDromRoom");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserDromRoomIn(List<String> values) {
+            addCriterion("user_drom_room in", values, "userDromRoom");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserDromRoomNotIn(List<String> values) {
+            addCriterion("user_drom_room not in", values, "userDromRoom");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserDromRoomBetween(String value1, String value2) {
+            addCriterion("user_drom_room between", value1, value2, "userDromRoom");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserDromRoomNotBetween(String value1, String value2) {
+            addCriterion("user_drom_room not between", value1, value2, "userDromRoom");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
