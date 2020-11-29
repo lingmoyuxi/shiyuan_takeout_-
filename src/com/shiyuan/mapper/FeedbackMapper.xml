@@ -6,6 +6,7 @@
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="feedback_type" jdbcType="VARCHAR" property="feedbackType" />
     <result column="feedback_content" jdbcType="VARCHAR" property="feedbackContent" />
+    <result column="feedback_image" jdbcType="VARCHAR" property="feedbackImage" />
     <result column="feedback_date" jdbcType="TIMESTAMP" property="feedbackDate" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    feedback_id, user_id, feedback_type, feedback_content, feedback_date
+    feedback_id, user_id, feedback_type, feedback_content, feedback_image, feedback_date
   </sql>
   <select id="selectByExample" parameterType="com.shiyuan.model.FeedbackExample" resultMap="BaseResultMap">
     select
@@ -114,9 +115,11 @@
   </delete>
   <insert id="insert" parameterType="com.shiyuan.model.Feedback">
     insert into feedback (feedback_id, user_id, feedback_type, 
-      feedback_content, feedback_date)
+      feedback_content, feedback_image, feedback_date
+      )
     values (#{feedbackId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{feedbackType,jdbcType=VARCHAR}, 
-      #{feedbackContent,jdbcType=VARCHAR}, #{feedbackDate,jdbcType=TIMESTAMP})
+      #{feedbackContent,jdbcType=VARCHAR}, #{feedbackImage,jdbcType=VARCHAR}, #{feedbackDate,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.shiyuan.model.Feedback">
     insert into feedback
@@ -132,6 +135,9 @@
       </if>
       <if test="feedbackContent != null">
         feedback_content,
+      </if>
+      <if test="feedbackImage != null">
+        feedback_image,
       </if>
       <if test="feedbackDate != null">
         feedback_date,
@@ -149,6 +155,9 @@
       </if>
       <if test="feedbackContent != null">
         #{feedbackContent,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackImage != null">
+        #{feedbackImage,jdbcType=VARCHAR},
       </if>
       <if test="feedbackDate != null">
         #{feedbackDate,jdbcType=TIMESTAMP},
@@ -176,6 +185,9 @@
       <if test="record.feedbackContent != null">
         feedback_content = #{record.feedbackContent,jdbcType=VARCHAR},
       </if>
+      <if test="record.feedbackImage != null">
+        feedback_image = #{record.feedbackImage,jdbcType=VARCHAR},
+      </if>
       <if test="record.feedbackDate != null">
         feedback_date = #{record.feedbackDate,jdbcType=TIMESTAMP},
       </if>
@@ -190,6 +202,7 @@
       user_id = #{record.userId,jdbcType=BIGINT},
       feedback_type = #{record.feedbackType,jdbcType=VARCHAR},
       feedback_content = #{record.feedbackContent,jdbcType=VARCHAR},
+      feedback_image = #{record.feedbackImage,jdbcType=VARCHAR},
       feedback_date = #{record.feedbackDate,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -207,6 +220,9 @@
       <if test="feedbackContent != null">
         feedback_content = #{feedbackContent,jdbcType=VARCHAR},
       </if>
+      <if test="feedbackImage != null">
+        feedback_image = #{feedbackImage,jdbcType=VARCHAR},
+      </if>
       <if test="feedbackDate != null">
         feedback_date = #{feedbackDate,jdbcType=TIMESTAMP},
       </if>
@@ -218,6 +234,7 @@
     set user_id = #{userId,jdbcType=BIGINT},
       feedback_type = #{feedbackType,jdbcType=VARCHAR},
       feedback_content = #{feedbackContent,jdbcType=VARCHAR},
+      feedback_image = #{feedbackImage,jdbcType=VARCHAR},
       feedback_date = #{feedbackDate,jdbcType=TIMESTAMP}
     where feedback_id = #{feedbackId,jdbcType=BIGINT}
   </update>

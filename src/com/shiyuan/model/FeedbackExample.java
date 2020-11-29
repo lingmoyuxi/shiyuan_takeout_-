@@ -365,6 +365,76 @@ public class FeedbackExample {
             return (Criteria) this;
         }
 
+        public Criteria andFeedbackImageIsNull() {
+            addCriterion("feedback_image is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackImageIsNotNull() {
+            addCriterion("feedback_image is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackImageEqualTo(String value) {
+            addCriterion("feedback_image =", value, "feedbackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackImageNotEqualTo(String value) {
+            addCriterion("feedback_image <>", value, "feedbackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackImageGreaterThan(String value) {
+            addCriterion("feedback_image >", value, "feedbackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackImageGreaterThanOrEqualTo(String value) {
+            addCriterion("feedback_image >=", value, "feedbackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackImageLessThan(String value) {
+            addCriterion("feedback_image <", value, "feedbackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackImageLessThanOrEqualTo(String value) {
+            addCriterion("feedback_image <=", value, "feedbackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackImageLike(String value) {
+            addCriterion("feedback_image like", value, "feedbackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackImageNotLike(String value) {
+            addCriterion("feedback_image not like", value, "feedbackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackImageIn(List<String> values) {
+            addCriterion("feedback_image in", values, "feedbackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackImageNotIn(List<String> values) {
+            addCriterion("feedback_image not in", values, "feedbackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackImageBetween(String value1, String value2) {
+            addCriterion("feedback_image between", value1, value2, "feedbackImage");
+            return (Criteria) this;
+        }
+
+        public Criteria andFeedbackImageNotBetween(String value1, String value2) {
+            addCriterion("feedback_image not between", value1, value2, "feedbackImage");
+            return (Criteria) this;
+        }
+
         public Criteria andFeedbackDateIsNull() {
             addCriterion("feedback_date is null");
             return (Criteria) this;

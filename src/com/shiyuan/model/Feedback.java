@@ -11,6 +11,8 @@ public class Feedback {
 
     private String feedbackContent;
 
+    private String feedbackImage;
+
     private Date feedbackDate;
 
     public Long getFeedbackId() {
@@ -43,6 +45,14 @@ public class Feedback {
 
     public void setFeedbackContent(String feedbackContent) {
         this.feedbackContent = feedbackContent;
+    }
+
+    public String getFeedbackImage() {
+        return feedbackImage;
+    }
+
+    public void setFeedbackImage(String feedbackImage) {
+        this.feedbackImage = feedbackImage;
     }
 
     public Date getFeedbackDate() {
