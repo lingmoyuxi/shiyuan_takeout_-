@@ -34,3 +34,6 @@ build/
 # project & classpath
 .project
 .classpath
+
+# project stage data
+.WebContent/WEB-INF/resource/
