@@ -21,6 +21,8 @@ public class Store {
 
     private Float longitude;
 
+    private String storeSchool;
+
     public Long getStoreId() {
         return storeId;
     }
@@ -99,5 +101,13 @@ public class Store {
 
     public void setLongitude(Float longitude) {
         this.longitude = longitude;
+    }
+
+    public String getStoreSchool() {
+        return storeSchool;
+    }
+
+    public void setStoreSchool(String storeSchool) {
+        this.storeSchool = storeSchool;
     }
 }

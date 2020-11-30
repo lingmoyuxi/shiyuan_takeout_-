@@ -12,6 +12,7 @@
     <result column="scope_id" jdbcType="BIGINT" property="scopeId" />
     <result column="latitude" jdbcType="REAL" property="latitude" />
     <result column="longitude" jdbcType="REAL" property="longitude" />
+    <result column="store_school" jdbcType="VARCHAR" property="storeSchool" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -73,7 +74,7 @@
   </sql>
   <sql id="Base_Column_List">
     store_id, name, icon, introduction, full_address, phone, business_hours, scope_id, 
-    latitude, longitude
+    latitude, longitude, store_school
   </sql>
   <select id="selectByExample" parameterType="com.shiyuan.model.StoreExample" resultMap="BaseResultMap">
     select
@@ -109,11 +110,11 @@
     insert into store (store_id, name, icon, 
       introduction, full_address, phone, 
       business_hours, scope_id, latitude, 
-      longitude)
+      longitude, store_school)
     values (#{storeId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
       #{introduction,jdbcType=VARCHAR}, #{fullAddress,jdbcType=VARCHAR}, #{phone,jdbcType=BIGINT}, 
       #{businessHours,jdbcType=VARCHAR}, #{scopeId,jdbcType=BIGINT}, #{latitude,jdbcType=REAL}, 
-      #{longitude,jdbcType=REAL})
+      #{longitude,jdbcType=REAL}, #{storeSchool,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.shiyuan.model.Store">
     insert into store
@@ -148,6 +149,9 @@
       <if test="longitude != null">
         longitude,
       </if>
+      <if test="storeSchool != null">
+        store_school,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="storeId != null">
@@ -179,6 +183,9 @@
       </if>
       <if test="longitude != null">
         #{longitude,jdbcType=REAL},
+      </if>
+      <if test="storeSchool != null">
+        #{storeSchool,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -221,6 +228,9 @@
       <if test="record.longitude != null">
         longitude = #{record.longitude,jdbcType=REAL},
       </if>
+      <if test="record.storeSchool != null">
+        store_school = #{record.storeSchool,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -237,7 +247,8 @@
       business_hours = #{record.businessHours,jdbcType=VARCHAR},
       scope_id = #{record.scopeId,jdbcType=BIGINT},
       latitude = #{record.latitude,jdbcType=REAL},
-      longitude = #{record.longitude,jdbcType=REAL}
+      longitude = #{record.longitude,jdbcType=REAL},
+      store_school = #{record.storeSchool,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -272,6 +283,9 @@
       <if test="longitude != null">
         longitude = #{longitude,jdbcType=REAL},
       </if>
+      <if test="storeSchool != null">
+        store_school = #{storeSchool,jdbcType=VARCHAR},
+      </if>
     </set>
     where store_id = #{storeId,jdbcType=BIGINT}
   </update>
@@ -285,7 +299,8 @@
       business_hours = #{businessHours,jdbcType=VARCHAR},
       scope_id = #{scopeId,jdbcType=BIGINT},
       latitude = #{latitude,jdbcType=REAL},
-      longitude = #{longitude,jdbcType=REAL}
+      longitude = #{longitude,jdbcType=REAL},
+      store_school = #{storeSchool,jdbcType=VARCHAR}
     where store_id = #{storeId,jdbcType=BIGINT}
   </update>
 </mapper>

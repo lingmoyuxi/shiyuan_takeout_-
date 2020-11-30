@@ -89,7 +89,7 @@ public class JsonUtil {
 				//根据字段类型不同追加数据
 				if (type.equals("class java.lang.String")) {  //字符串添加引号
 					sBuffer.append("\""+ (field.get(object) == null?"":field.get(object)) + "\"");
-				} else if (type.equals("class java.lang.Long")||type.equals("class java.lang.Integer")||type.equals("class java.math.BigDecimal")) { //数值型空值处理
+				} else if (type.equals("class java.lang.Long")||type.equals("class java.lang.Integer")||type.equals("class java.math.BigDecimal")||type.equals("class java.lang.Float")) { //数值型空值处理
 					sBuffer.append(field.get(object) == null?"null":field.get(object));
 				} else if (type.equals("interface java.util.List")||type.equals("class java.util.ArrayList")) { //列表转toJson()进一步处理
 					sBuffer.append(field.get(object) == null?"[]":toJson(field.get(object)));

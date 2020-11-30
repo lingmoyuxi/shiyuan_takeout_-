@@ -753,6 +753,76 @@ public class StoreExample {
             addCriterion("longitude not between", value1, value2, "longitude");
             return (Criteria) this;
         }
+
+        public Criteria andStoreSchoolIsNull() {
+            addCriterion("store_school is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreSchoolIsNotNull() {
+            addCriterion("store_school is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreSchoolEqualTo(String value) {
+            addCriterion("store_school =", value, "storeSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreSchoolNotEqualTo(String value) {
+            addCriterion("store_school <>", value, "storeSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreSchoolGreaterThan(String value) {
+            addCriterion("store_school >", value, "storeSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreSchoolGreaterThanOrEqualTo(String value) {
+            addCriterion("store_school >=", value, "storeSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreSchoolLessThan(String value) {
+            addCriterion("store_school <", value, "storeSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreSchoolLessThanOrEqualTo(String value) {
+            addCriterion("store_school <=", value, "storeSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreSchoolLike(String value) {
+            addCriterion("store_school like", value, "storeSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreSchoolNotLike(String value) {
+            addCriterion("store_school not like", value, "storeSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreSchoolIn(List<String> values) {
+            addCriterion("store_school in", values, "storeSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreSchoolNotIn(List<String> values) {
+            addCriterion("store_school not in", values, "storeSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreSchoolBetween(String value1, String value2) {
+            addCriterion("store_school between", value1, value2, "storeSchool");
+            return (Criteria) this;
+        }
+
+        public Criteria andStoreSchoolNotBetween(String value1, String value2) {
+            addCriterion("store_school not between", value1, value2, "storeSchool");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
