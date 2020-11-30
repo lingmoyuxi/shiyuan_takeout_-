@@ -1,17 +1,18 @@
 package com.shiyuan.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class OrderExample {
+public class OrdersExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public OrderExample() {
+    public OrdersExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -162,6 +163,66 @@ public class OrderExample {
 
         public Criteria andOrderIdNotBetween(Long value1, Long value2) {
             addCriterion("order_id not between", value1, value2, "orderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdIsNull() {
+            addCriterion("user_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdIsNotNull() {
+            addCriterion("user_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdEqualTo(Long value) {
+            addCriterion("user_id =", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotEqualTo(Long value) {
+            addCriterion("user_id <>", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdGreaterThan(Long value) {
+            addCriterion("user_id >", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("user_id >=", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdLessThan(Long value) {
+            addCriterion("user_id <", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdLessThanOrEqualTo(Long value) {
+            addCriterion("user_id <=", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdIn(List<Long> values) {
+            addCriterion("user_id in", values, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotIn(List<Long> values) {
+            addCriterion("user_id not in", values, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdBetween(Long value1, Long value2) {
+            addCriterion("user_id between", value1, value2, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdNotBetween(Long value1, Long value2) {
+            addCriterion("user_id not between", value1, value2, "userId");
             return (Criteria) this;
         }
 
@@ -435,6 +496,66 @@ public class OrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andTotalPriceIsNull() {
+            addCriterion("total_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceIsNotNull() {
+            addCriterion("total_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceEqualTo(BigDecimal value) {
+            addCriterion("total_price =", value, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceNotEqualTo(BigDecimal value) {
+            addCriterion("total_price <>", value, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceGreaterThan(BigDecimal value) {
+            addCriterion("total_price >", value, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("total_price >=", value, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceLessThan(BigDecimal value) {
+            addCriterion("total_price <", value, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("total_price <=", value, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceIn(List<BigDecimal> values) {
+            addCriterion("total_price in", values, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceNotIn(List<BigDecimal> values) {
+            addCriterion("total_price not in", values, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("total_price between", value1, value2, "totalPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andTotalPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("total_price not between", value1, value2, "totalPrice");
+            return (Criteria) this;
+        }
+
         public Criteria andRemarksIsNull() {
             addCriterion("remarks is null");
             return (Criteria) this;
@@ -562,6 +683,66 @@ public class OrderExample {
 
         public Criteria andCreateTimeNotBetween(Date value1, Date value2) {
             addCriterion("create_time not between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderStatuIsNull() {
+            addCriterion("order_statu is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderStatuIsNotNull() {
+            addCriterion("order_statu is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderStatuEqualTo(Integer value) {
+            addCriterion("order_statu =", value, "orderStatu");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderStatuNotEqualTo(Integer value) {
+            addCriterion("order_statu <>", value, "orderStatu");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderStatuGreaterThan(Integer value) {
+            addCriterion("order_statu >", value, "orderStatu");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderStatuGreaterThanOrEqualTo(Integer value) {
+            addCriterion("order_statu >=", value, "orderStatu");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderStatuLessThan(Integer value) {
+            addCriterion("order_statu <", value, "orderStatu");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderStatuLessThanOrEqualTo(Integer value) {
+            addCriterion("order_statu <=", value, "orderStatu");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderStatuIn(List<Integer> values) {
+            addCriterion("order_statu in", values, "orderStatu");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderStatuNotIn(List<Integer> values) {
+            addCriterion("order_statu not in", values, "orderStatu");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderStatuBetween(Integer value1, Integer value2) {
+            addCriterion("order_statu between", value1, value2, "orderStatu");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderStatuNotBetween(Integer value1, Integer value2) {
+            addCriterion("order_statu not between", value1, value2, "orderStatu");
             return (Criteria) this;
         }
     }

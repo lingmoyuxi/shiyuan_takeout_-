@@ -1,8 +1,13 @@
 package com.shiyuan.util;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonUtil {
 	/**
@@ -69,6 +74,20 @@ public class JsonUtil {
 	}
 	
 	/**
+	 * json转JavaBean对象
+	 * @param <T>
+	 * @param json json数据
+	 * @param valueType JavaBean.class
+	 * @return
+	 * @throws JsonParseException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 */
+	public static <T> T toJavaBean(String json,Class<T> valueType) throws JsonParseException, JsonMappingException, IOException {
+		return new ObjectMapper().readValue(json,valueType);
+	}
+	
+	/**
 	 * class转换成Json字符串
 	 * @param object object对象
 	 * @return json字符串
@@ -85,25 +104,44 @@ public class JsonUtil {
 			field.setAccessible(true);  //允许访问private声明的字段
 			String type = field.getGenericType().toString(); //字段类型
 			try {
-				sBuffer.append("\""+ field.getName() + "\":");  //字段名
 				//根据字段类型不同追加数据
 				if (type.equals("class java.lang.String")) {  //字符串添加引号
+					if (i !=0 ) {
+						sBuffer.append(",");
+					}
+					sBuffer.append("\""+ field.getName() + "\":");  //字段名
 					sBuffer.append("\""+ (field.get(object) == null?"":field.get(object)) + "\"");
-				} else if (type.equals("class java.lang.Long")||type.equals("class java.lang.Integer")||type.equals("class java.math.BigDecimal")||type.equals("class java.lang.Float")) { //数值型空值处理
+				} else if (type.equals("long")||type.equals("int")||type.equals("class java.lang.Long")||type.equals("class java.lang.Integer")||type.equals("class java.math.BigDecimal")||type.equals("class java.lang.Float")) { //数值型空值处理
+					if (i !=0 ) {
+						sBuffer.append(",");
+					}
+					sBuffer.append("\""+ field.getName() + "\":");  //字段名
 					sBuffer.append(field.get(object) == null?"null":field.get(object));
-				} else if (type.equals("interface java.util.List")||type.equals("class java.util.ArrayList")) { //列表转toJson()进一步处理
+				} else if (type.equals("interface java.util.List")||type.equals("class java.util.ArrayList")||type.contains("java.util.List")) { //列表转toJson()进一步处理
+					if (i !=0 ) {
+						sBuffer.append(",");
+					}
+					sBuffer.append("\""+ field.getName() + "\":");  //字段名
 					sBuffer.append(field.get(object) == null?"[]":toJson(field.get(object)));
 				} else if (type.equals("class java.util.Date")) { //处理Date 
+					if (i !=0 ) {
+						sBuffer.append(",");
+					}
+					sBuffer.append("\""+ field.getName() + "\":");  //字段名
 					SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
 					sBuffer.append("\""+ (field.get(object) == null?"":ft.format(field.get(object))) + "\"");
-				} else { //未添加待处理
+				}else if (type.startsWith("class com.shiyuan.model")) { 
+					if (i !=0 ) {
+						sBuffer.append(",");
+					}
+					sBuffer.append("\""+ field.getName() + "\":");  //字段名
+					sBuffer.append(field.get(object) == null?"{}":toJson(field.get(object)));
+				}
+				else { //未添加待处理
 					System.out.println("未指定类型，待处理");
 					System.out.println(field.getName() + " --" + field.getGenericType() + "---" + field.get(object));
-				}
-				if (i >= fields.length - 1) {  //最后一项不追加 ,
 					continue;
 				}
-				sBuffer.append(",");
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				// TODO 自动生成的 catch 块
 				e.printStackTrace();

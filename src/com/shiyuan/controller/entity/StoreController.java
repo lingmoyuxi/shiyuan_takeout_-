@@ -57,10 +57,8 @@ public class StoreController {
 		try {
 			file.transferTo(f);
 		} catch (IllegalStateException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 		store.setIcon("image/storeicon/" + filename);
