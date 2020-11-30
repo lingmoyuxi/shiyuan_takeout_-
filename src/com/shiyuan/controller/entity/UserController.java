@@ -690,7 +690,7 @@ public class UserController {
 		user.setUserName(name);
 		user.setUserAccount(account);
 		user.setUserPassword(password);
-		user.setUserIcon("/image/default/defaultIcon.jpeg");
+		user.setUserIcon("image/default/defaultIcon.jpeg");
 		return user;
 	}
 	public User newUser(Long account,String password) {

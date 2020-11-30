@@ -42,7 +42,7 @@ public class CommodityController {
 	@ResponseBody
 	@PostMapping("getcommoditys")
 	public String getCommoditys() {
-		return JsonUtil.basic(new Commodity());
+		return JsonUtil.basic(commodityMapper.selectByExample(null));
 	}
 	
 	@ResponseBody
