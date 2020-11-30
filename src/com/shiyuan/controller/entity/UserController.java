@@ -449,6 +449,19 @@ public class UserController {
 			return JsonUtil.basicError(1,"找不到用户");
 		} else {
 			User user = result.get(0);
+			
+			userExample.clear();
+			userExample.createCriteria().andUserQqKeyEqualTo(userQqKey);
+			List<User> users = userMapper.selectByExample(userExample);
+			if (!(users == null|| users.isEmpty())) {
+				for (User user2 : users) {
+					if (!String.valueOf(user2.getUserId()).equals(String.valueOf(user.getUserId()))) {
+						return JsonUtil.basicError(2, "该QQ已被其它账户关联");
+					}
+				}
+				return JsonUtil.basic(0,user,"未更改（新旧QQ绑定一致）");
+			}
+			
 			String qqKeyString = user.getUserQqKey();
 			if (qqKeyString == null || qqKeyString.isEmpty() || qqKeyString.length() == 0) {
 				Thirdlogin thirdlogin = new Thirdlogin();
@@ -473,7 +486,7 @@ public class UserController {
 	
 	
 	/**
-	 * 用户绑定QQ
+	 * 用户绑定微信
 	 * @param person  userId  userWeixinKey
 	 * @return
 	 */
@@ -490,6 +503,24 @@ public class UserController {
 			return JsonUtil.basicError(1,"找不到用户");
 		} else {
 			User user = result.get(0);
+			
+			userExample.clear();
+			userExample.createCriteria().andUserWeixinKeyEqualTo(userWeixinKey);
+			List<User> users = userMapper.selectByExample(userExample);
+			System.out.println("使用该wxKey的用户"+users.size());
+			if (!(users == null|| users.isEmpty())) {
+				for (User user2 : users) {
+					System.out.println("使用该wxKey的用户"+user2.getUserId());
+					if (!String.valueOf(user2.getUserId()).equals(String.valueOf(user.getUserId()))) {
+						System.out.println("用户比对 "+user2.getUserId()+"--"+user.getUserId());
+						return JsonUtil.basicError(2, "该微信已被其它账户关联");
+					}
+				}
+				return JsonUtil.basic(0,user,"未更改（新旧微信绑定一致）");
+			}
+			
+			
+			
 			String wxKeyString = user.getUserWeixinKey();
 			if (wxKeyString == null || wxKeyString.isEmpty() || wxKeyString.length() == 0) {
 				Thirdlogin thirdlogin = new Thirdlogin();
